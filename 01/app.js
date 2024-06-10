@@ -9,7 +9,7 @@ function main() {
     const startTime = new Date();
     let game = new SlotGame()
 
-    let playBet = 60
+    let playBet = 60 * 3
     let loop = 1000 * 10000
     let step = 1
     if (loop > 100) {
