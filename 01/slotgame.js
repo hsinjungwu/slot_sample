@@ -118,6 +118,7 @@ export default class SlotGame {
             let col = [];
             for (let y = 0; y < this.ReelY; y++) {
                 col.push((y + rngs[x]) % reelLen);
+
             }
             this.Output.RngFrame.push(col);
         }
@@ -198,13 +199,14 @@ export default class SlotGame {
                 continue;
             }
 
+            let winline = null
             if (wWin >= nWin) {
-                this.Output.WinLines.push(new GameLine(lno, Symbol.W, wCount, pattern, wWin));
-                this.Output.NormalWinAmt += wWin * this.Denom;
+                winline = new GameLine(lno, Symbol.W, wCount, pattern, wWin * this.Denom);
             } else {
-                this.Output.WinLines.push(new GameLine(lno, leadSymbol, nCount, pattern, nWin));
-                this.Output.NormalWinAmt += nWin * this.Denom;
+                winline = new GameLine(lno, leadSymbol, nCount, pattern, nWin * this.Denom);
             }
+            this.Output.WinLines.push(winline);
+            this.Output.NormalWinAmt += winline.WinAmt;
         }
 
         if (this.Output.WinLines.length > 0) {
@@ -238,13 +240,15 @@ export default class SlotGame {
             }
         }
 
-        let win = this.Model.PayTable[Symbol.F][sfCount] * this.BaseBetAmt * this.Denom;
-        if (win > 0) {
-            // 觸發 Free Game 圖標代號為 100
+
+        let fsCount = this.Model.FreeSpinCount[sfCount]
+        if (fsCount > 0) {
+            let win = this.Model.PayTable[Symbol.F][sfCount] * this.BaseBetAmt * this.Denom;
+            // 觸發 Free Game 贏分線代號為 100
             this.Output.WinLines.push(new GameLine(100, Symbol.F, sfCount, pos, win));
             this.Output.ScatterAmt = win;
             this.Output.WinType = WinType.WIN_FG;
-            this.Output.FreeSpinCount = this.Model.FreeSpinCount[sfCount];
+            this.Output.FreeSpinCount = fsCount;
 
             this.Output.StickyPosition = []
             for (let x = 0; x < this.ReelX; x++) {
