@@ -175,7 +175,7 @@ export default class SlotGame {
 
 
             let nCount = 0;
-            // 主遊戲不處理 SCATTER
+            // 一般算分不處理 SCATTER
             if (leadSymbol != Symbol.F) {
                 // 不是 w 5 連線
                 if (wCount < l) {
