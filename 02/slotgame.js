@@ -118,6 +118,7 @@ export default class SlotGame {
                 } else {
                     numberOfKind++
                     stack *= tmpCount
+                    winPosititon.push(tmpPos)
                 }
             }
 

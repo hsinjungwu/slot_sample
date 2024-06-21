@@ -53,7 +53,6 @@ function main() {
             let fgCount = game.Model.FgLuckyDraw[fgID].Count
 
             while (true) {
-
                 for (let fs = 0; fs < fgCount; fs++) {
                     let fi = new GameInput()
                     fi.Table = fgTable
