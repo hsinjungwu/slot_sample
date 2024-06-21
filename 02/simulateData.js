@@ -11,11 +11,9 @@ export default class SimulationData {
 
     show() {
         let totalWin = this.MgWin + this.FgWin
-
         console.log("total Win = %f, total Bet = %f, RTP = %s", totalWin, this.Bet, this._rtp(totalWin))
         console.log("mg rtp = %s, fg rtp = %s", this._rtp(this.MgWin), this._rtp(this.FgWin))
         console.log("Hit Rate = %s, fg freq = %s, cv = %s", this._hitRate(), this._fgFreq(), this._cv())
-
     }
 
     _fgFreq() {
@@ -41,7 +39,6 @@ export default class SimulationData {
         let m = this.SpinCount - 1
         let sigma = Math.sqrt(d / m)
         let avg = totalWin / this.SpinCount
-
         return `${(sigma / avg).toFixed(2)}`
     }
 }

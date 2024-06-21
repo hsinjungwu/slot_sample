@@ -83,11 +83,11 @@ export default class SlotGame {
 
             let stack = 1 //堆疊數
             let numberOfKind = 0 //連線長度
-            let winPosititon = [] // 每個滾輪贏分圖標位置格式 [[0,1],[2],[0]]
+            let winPosititon = [] // 每個滾輪贏分圖標位置格式範例 [[0,1],[2],[0]]
             let tmpCount = 0 // 暫存值，每個滾輪特定圖標個數
             let tmpPos = [] // 暫存值，每個滾輪贏分圖標位置
 
-            // 預設 way game 的首輪不放置百搭
+            // way game 的首輪不放置百搭
             for (let y = 0; y < this.ReelY; y++) {
                 if (this.Output.SymbolFrame[0][y] == sb) {
                     tmpCount++
@@ -134,14 +134,13 @@ export default class SlotGame {
             this.Output.NormalWinAmt += winline.WinAmt;
         }
 
-
         if (this.Output.WinLines.length > 0) {
             this.Output.WinType = WinType.WIN_MG;
         }
     }
 
     _calcScatterPay() {
-        // F 連續
+        // scatter 連續
         let cfCount = 0
         let winPosititon = []
 
@@ -163,7 +162,7 @@ export default class SlotGame {
             }
         }
 
-        // 因為不是固定場數，所以計算超過觸發個數
+        // 因為不是固定場數，所以判斷 scatter 個數有沒有超過最小觸發數
         if (cfCount >= this.Model.MinScatterCount) {
             let win = this.Model.PayTable[Symbol.F][cfCount] * this.BaseBetAmt * this.Denom;
             // 觸發 Free Game 贏分線代號為 100
