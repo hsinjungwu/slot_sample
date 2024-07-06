@@ -34,8 +34,9 @@ function main() {
         total.Bet += playBet
         for (let i = 0; i < mos.length; i++) {
             let mo = mos[i]
-            total.MgWin += mo.NormalWinAmt
-            tmpWin += mo.NormalWinAmt
+            let winSum = mo.NormalWinAmt + mo.MultipleWinAmt
+            total.MgWin += winSum
+            tmpWin += winSum
         }
 
         let lmo = mos[mos.length - 1]
@@ -44,15 +45,27 @@ function main() {
             tmpWin += lmo.ScatterAmt
             total.FgWin += lmo.ScatterAmt
             let totalFs = lmo.FreeSpins
+
+            // 累積倍數
+            let accuM = 0
+
+            // 每一次 free spin
             for (let fs = 0; fs < totalFs; fs++) {
                 let fi = new GameInput()
                 fi.Table = Table.FreeGame1
+
+                // 新增內容 👇
+                // 設定累積倍數，一開始是 0 
+                fi.FgAccumulateMultiple = accuM
+                // 新增內容 👆
+
                 let fos = game.spin(fi)
 
                 for (let i = 0; i < fos.length; i++) {
                     let fo = fos[i]
-                    total.FgWin += (fo.NormalWinAmt + fo.ScatterAmt)
-                    tmpWin += (fo.NormalWinAmt + fo.ScatterAmt)
+                    let winSum = fo.NormalWinAmt + fo.ScatterAmt + fo.MultipleWinAmt
+                    total.FgWin += winSum
+                    tmpWin += winSum
                     if (fo.WinType == WinType.WIN_FG) {
                         totalFs += fo.FreeSpins
                         if (totalFs > game.Model.MaxFreeSpins) {
@@ -61,6 +74,11 @@ function main() {
                     }
 
                 }
+
+                // 新增內容 👇
+                // 更新累積倍數
+                accuM = fos[fos.length - 1].FgAccumulateMultiple
+                // 新增內容 👆
             }
         }
         total.WinSquare += tmpWin * tmpWin
